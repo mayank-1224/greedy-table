@@ -1,11 +1,10 @@
-import Slider from "@mui/material/Slider";
+import "../styles/Filters.css";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   filterByColumn,
   resetData,
 } from "../redux/features/tableData/fetchDataSlice";
-import { useDispatch, useSelector } from "react-redux";
-import "../styles/Filters.css";
 
 const Filters = (props) => {
   const [value, setValue] = useState(props.sValue);
@@ -17,22 +16,17 @@ const Filters = (props) => {
     "Age Calculator",
   ]);
   const [selectedApp, setSelectedApp] = useState("");
-  const { apps } = useSelector((state) => state.fetch);
+  const [typing, setTyping] = useState("");
+  const apps = useSelector((state) => state.fetch.apps);
   const dispatch = useDispatch();
-  const appNames = [
-    "Panda Draw",
-    "Number Ninja",
-    "Word Crush",
-    "Brain Quiz",
-    "Age Calculator",
-  ];
-  console.log(apps);
+  const appNames = apps.map((app) => app.app_name);
 
   const handleApply = () => {
     dispatch(filterByColumn({ column: props.column, value }));
   };
 
   const handleSearchInputChange = (e) => {
+    setTyping(e.target.value);
     const searchTerm = e.target.value.toLowerCase();
     const filtered = appNames.filter((name) =>
       name.toLowerCase().includes(searchTerm)
@@ -49,7 +43,7 @@ const Filters = (props) => {
             type="text"
             placeholder="Search"
             onChange={handleSearchInputChange}
-            value={selectedApp}
+            value={typing}
           />
           <div
             style={{
@@ -63,8 +57,13 @@ const Filters = (props) => {
                 key={app}
                 onClick={() => {
                   setValue(app);
+                  setTyping(app);
                   setSelectedApp(app);
                   console.log(value);
+                }}
+                style={{
+                  backgroundColor: selectedApp === app ? "#2178ed" : "",
+                  color: selectedApp === app ? "white" : "",
                 }}
               >
                 <p className="app_name">{app}</p>

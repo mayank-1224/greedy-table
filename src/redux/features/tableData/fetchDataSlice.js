@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-var tempApps;
 export const fetchApps = createAsyncThunk("api/fetchApps", async () => {
   const response = await fetch("https://go-dev.greedygame.com/v3/dummy/apps");
   if (!response.ok) {
     throw new Error("Failed to fetch apps");
   }
   const data = await response.json();
-  tempApps = data.data;
   return data;
 });
 
@@ -100,14 +98,6 @@ export const fetchSlice = createSlice({
         state.report.finalData = filteredData;
         return;
       }
-      // if (column === "date") {
-      //   const filteredData = state.report.data.filter((item) => {
-      //     const itemDate = new Date(item.date);
-      //     return (
-      //       itemDate >= new Date(startDate) && itemDate <= new Date(endDate)
-      //     );
-      //   });
-      // }
       const filteredData = state.report.data.filter((item) => {
         if (item[column] <= value) {
           return item;
@@ -117,6 +107,9 @@ export const fetchSlice = createSlice({
     },
     formatData(state) {
       const finalData = state.report.data.map((item) => {
+        //***********************************************/
+        // const tempApps = state.apps; -> doing this manually cause of api issue in firefox
+        // console.log(state.apps);
         const tempApps = [
           {
             app_id: "123456",
@@ -139,6 +132,7 @@ export const fetchSlice = createSlice({
             app_name: "Age Calculator",
           },
         ];
+        state.apps = tempApps;
         const appName = tempApps.find((app) => app.app_id === item.app_id);
         return { ...item, appName: appName.app_name };
       });
@@ -190,8 +184,6 @@ export const fetchSlice = createSlice({
         },
       };
 
-      const len = finalData.length;
-      console.log(len);
       finalData.forEach((data) => {
         totalValues.appName.total += 1;
         totalValues.date.total += 1;

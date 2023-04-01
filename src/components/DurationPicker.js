@@ -1,19 +1,17 @@
 import "../styles/Analytics.css";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector, useDispatch } from "react-redux";
-import { setStartDate } from "../redux/features/dates/startDateSlice";
-import { setEndDate } from "../redux/features/dates/endDateSlice";
+import DatePicker from "react-datepicker";
+import { setStartDate, setEndDate } from "../redux/features/dates/endDateSlice";
 import { setDurationPicker, setFetchAPI } from "../redux/features/miscSlice";
 
 const DurationPicker = () => {
-  const startDate = useSelector((state) => state.startDate.value);
-  const endDate = useSelector((state) => state.endDate.value);
+  const startDate = useSelector((state) => state.dates.startDate);
+  const endDate = useSelector((state) => state.dates.endDate);
   const durationPickerOpen = useSelector(
     (state) => state.misc.durationPickerOpen
   );
   const { fetchAPI } = useSelector((state) => state.misc);
-
   const dispatch = useDispatch();
 
   return (
@@ -27,6 +25,7 @@ const DurationPicker = () => {
           console.log(date);
           dispatch(setStartDate(date));
         }}
+        maxDate={endDate}
       />
       End:
       <DatePicker

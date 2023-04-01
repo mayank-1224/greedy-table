@@ -1,5 +1,4 @@
 import "../styles/Settings.css";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import {
@@ -9,29 +8,19 @@ import {
   copyToFinalItems,
   resetSettings,
 } from "../redux/features/metrics/metricsOrderSlice";
-import {
-  addItem,
-  removeItem,
-} from "../redux/features/metrics/metricsSelectionSlice";
 import { setSettings } from "../redux/features/miscSlice";
 
 const Settings = () => {
   const items = useSelector((state) => state.metricsOrder.items);
-  const openSettings = useSelector((state) => state.misc.openSettings);
-
-  const dispatch = useDispatch();
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+  const dispatch = useDispatch();
 
   const handleDragStart = (event, index) => {
     setDraggedItemIndex(index);
     event.dataTransfer.effectAllowed = "move";
-
-    // Set the target element as the drag image
     const target = event.target;
     target.classList.add("dragging");
     event.dataTransfer.setDragImage(target, 0, 0);
-
-    // Use a dummy element as the data transfer object to support Firefox
     const dummy = document.createElement("div");
     event.dataTransfer.setData("text/html", dummy);
   };

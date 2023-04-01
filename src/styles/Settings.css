@@ -62,6 +62,7 @@
   }
 
   .items_container {
+    height: auto;
     flex-direction: column;
   }
   ._items {

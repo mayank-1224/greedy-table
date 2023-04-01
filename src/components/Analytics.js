@@ -1,22 +1,20 @@
 import "../styles/Analytics.css";
-import { IconContext } from "react-icons";
-import DurationPicker from "./DurationPicker";
-import Settings from "./Settings";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import DurationPicker from "./DurationPicker";
+import Settings from "./Settings";
 import Table from "./Table";
-import TableNew from "./TableNew";
 import { setDurationPicker, setSettings } from "../redux/features/miscSlice";
+import { IconContext } from "react-icons";
 import { FaCalendarAlt } from "react-icons/fa";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 
 const Analytics = () => {
-  // const [openDurationPicker, setOpenDurationPicker] = useState(false);
-  const startDate = useSelector((state) => state.startDate.value);
-  const endDate = useSelector((state) => state.endDate.value);
   const [startDateFormatted, setStartDateFormatted] = useState("");
   const [endDateFormatted, setEndDateFormatted] = useState("");
+  const startDate = useSelector((state) => state.dates.startDate);
+  const endDate = useSelector((state) => state.dates.endDate);
   const items = useSelector((state) => state.metricsOrder.items);
   const durationPickerOpen = useSelector(
     (state) => state.misc.durationPickerOpen
@@ -61,7 +59,7 @@ const Analytics = () => {
       {durationPickerOpen && <DurationPicker />}
       {openSettings && <Settings />}
       <div className="table_container">
-        <TableNew items={items} startDate={startDate} endDate={endDate} />
+        <Table items={items} startDate={startDate} endDate={endDate} />
       </div>
     </div>
   );

@@ -15,6 +15,10 @@
   font-weight: 600;
 }
 
+.filter_opener_div {
+  cursor: pointer;
+}
+
 .columns {
   display: flex;
   flex-direction: column;
@@ -48,7 +52,7 @@
 }
 
 @media (max-width: 1000px) {
-  .columnHeader {
+  .column_header {
     font-size: 8px;
   }
   .column_total {

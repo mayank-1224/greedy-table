@@ -8,6 +8,7 @@ import {
 
 const Filters = (props) => {
   const [value, setValue] = useState(props.sValue);
+  //manually because API issues on firefox ----------------->
   const [filteredApps, setFilteredApps] = useState([
     "Panda Draw",
     "Number Ninja",

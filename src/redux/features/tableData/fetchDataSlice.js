@@ -3,12 +3,16 @@ import axios from "axios";
 
 var tempApps;
 export const fetchApps = createAsyncThunk("api/fetchApps", async () => {
-  const response = await axios.get(
-    "http://go-dev.greedygame.com/v3/dummy/apps"
-  );
+  const response = await fetch("http://go-dev.greedygame.com/v3/dummy/apps");
 
-  tempApps = response.data.data;
-  return response.data;
+  if (!response.ok) {
+    throw new Error("Failed to fetch apps");
+  }
+
+  const data = await response.json();
+  tempApps = data.data;
+  console.log(tempApps);
+  return data;
 });
 
 export const fetchReport = createAsyncThunk(
@@ -122,7 +126,29 @@ export const fetchSlice = createSlice({
     },
     formatData(state) {
       const finalData = state.report.data.map((item) => {
-        const appName = state.apps.find((app) => app.app_id === item.app_id);
+        const tempApps = [
+          {
+            app_id: "123456",
+            app_name: "Panda Draw",
+          },
+          {
+            app_id: "789652",
+            app_name: "Number Ninja",
+          },
+          {
+            app_id: "741553",
+            app_name: "Word Crush",
+          },
+          {
+            app_id: "986321",
+            app_name: "Brain Quiz",
+          },
+          {
+            app_id: "320248",
+            app_name: "Age Calculator",
+          },
+        ];
+        const appName = tempApps.find((app) => app.app_id === item.app_id);
         return { ...item, appName: appName.app_name };
       });
       const totalValues = {
@@ -265,11 +291,15 @@ export const fetchSlice = createSlice({
       totalValues.fillRate.total =
         totalValues.fillRate.total.toLocaleString(undefined, {
           maximumFractionDigits: 1,
-        }) + "%";
+        }) /
+          finalData.length +
+        "%";
       totalValues.ctr.total =
         totalValues.ctr.total.toLocaleString(undefined, {
           maximumFractionDigits: 1,
-        }) + "%";
+        }) /
+          finalData.length +
+        "%";
 
       finalData.forEach((item) => {
         const dateObj = new Date(item.date);

@@ -184,8 +184,6 @@ export const fetchSlice = createSlice({
       };
 
       finalData.forEach((data) => {
-        totalValues.appName.total += 1;
-        totalValues.date.total += 1;
         totalValues.clicks.total += data.clicks;
         totalValues.clicks.min = Math.min(totalValues.clicks.min, data.clicks);
         totalValues.clicks.max = Math.max(totalValues.clicks.max, data.clicks);
@@ -276,6 +274,14 @@ export const fetchSlice = createSlice({
         (totalValues.fillRate.total / finalData.length).toFixed(2) + "%";
       totalValues.ctr.total =
         (totalValues.ctr.total / finalData.length).toFixed(2) + "%";
+      totalValues.fillRate.min = totalValues.fillRate.min.toFixed(2);
+      totalValues.fillRate.max = totalValues.fillRate.max.toFixed(2);
+      totalValues.ctr.min = totalValues.ctr.min.toFixed(2);
+      totalValues.ctr.max = totalValues.ctr.max.toFixed(2);
+      totalValues.revenue.min = totalValues.revenue.min.toFixed(2);
+      totalValues.revenue.max = totalValues.revenue.max.toFixed(2);
+      totalValues.date.total = finalData.length;
+      totalValues.appName.total = finalData.length;
 
       finalData.forEach((item) => {
         const dateObj = new Date(item.date);

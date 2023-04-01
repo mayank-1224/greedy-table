@@ -39,8 +39,6 @@ const TableNew = ({ items, startDate, endDate }) => {
     if (loading === false) dispatch(fetchReport({ sDate, eDate }));
   }, [fetchAPI]);
 
-  console.log(apps);
-
   useEffect(() => {
     if (report.data) {
       dispatch(formatData(report.data));
@@ -48,6 +46,7 @@ const TableNew = ({ items, startDate, endDate }) => {
   }, [report.data]);
 
   const handleDivClick = (divID) => {
+    if (divID === "date") return;
     if (divID === openFilters) {
       // setOpenFilters(null);
     } else {

@@ -3,14 +3,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 var tempApps;
 export const fetchApps = createAsyncThunk("api/fetchApps", async () => {
   const response = await fetch("https://go-dev.greedygame.com/v3/dummy/apps");
-
   if (!response.ok) {
     throw new Error("Failed to fetch apps");
   }
-
   const data = await response.json();
   tempApps = data.data;
-  console.log(tempApps);
   return data;
 });
 
@@ -23,7 +20,6 @@ export const fetchReport = createAsyncThunk(
     const resdata = await response.json();
     const data = resdata.data;
     const originalData = data;
-
     return {
       data: data,
       originalData: data,
@@ -95,10 +91,8 @@ export const fetchSlice = createSlice({
   reducers: {
     filterByColumn(state, action) {
       const { column, value } = action.payload;
-      console.log(column, value);
       if (column === "appName") {
         const filteredData = state.report.finalData.filter((item) => {
-          console.log(item.appName, value);
           if (item.appName === value) {
             return item;
           }
@@ -114,14 +108,11 @@ export const fetchSlice = createSlice({
       //     );
       //   });
       // }
-      console.log(column, value);
       const filteredData = state.report.data.filter((item) => {
         if (item[column] <= value) {
-          console.log(item[column]);
           return item;
         }
       });
-      console.log(filteredData);
       state.report.data = filteredData;
     },
     formatData(state) {
@@ -199,6 +190,8 @@ export const fetchSlice = createSlice({
         },
       };
 
+      const len = finalData.length;
+      console.log(len);
       finalData.forEach((data) => {
         totalValues.appName.total += 1;
         totalValues.date.total += 1;
@@ -289,17 +282,9 @@ export const fetchSlice = createSlice({
           maximumFractionDigits: 1,
         });
       totalValues.fillRate.total =
-        (
-          totalValues.fillRate.total.toLocaleString(undefined, {
-            maximumFractionDigits: 1,
-          }) / finalData.length
-        ).toFixed(2) + "%";
+        (totalValues.fillRate.total / finalData.length).toFixed(2) + "%";
       totalValues.ctr.total =
-        (
-          totalValues.ctr.total.toLocaleString(undefined, {
-            maximumFractionDigits: 1,
-          }) / finalData.length
-        ).toFixed(2) + "%";
+        (totalValues.ctr.total / finalData.length).toFixed(2) + "%";
 
       finalData.forEach((item) => {
         const dateObj = new Date(item.date);

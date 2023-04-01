@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 var tempApps;
 export const fetchApps = createAsyncThunk("api/fetchApps", async () => {
@@ -18,10 +17,11 @@ export const fetchApps = createAsyncThunk("api/fetchApps", async () => {
 export const fetchReport = createAsyncThunk(
   "api/fetchReport",
   async (payload) => {
-    const response = await axios.get(
+    const response = await fetch(
       `http://go-dev.greedygame.com/v3/dummy/report?startDate=${payload.sDate}&endDate=${payload.eDate}`
     );
-    const data = response.data.data;
+    const resdata = await response.json();
+    const data = resdata.data;
     const originalData = data;
 
     return {
@@ -289,17 +289,17 @@ export const fetchSlice = createSlice({
           maximumFractionDigits: 1,
         });
       totalValues.fillRate.total =
-        totalValues.fillRate.total.toLocaleString(undefined, {
-          maximumFractionDigits: 1,
-        }) /
-          finalData.length +
-        "%";
+        (
+          totalValues.fillRate.total.toLocaleString(undefined, {
+            maximumFractionDigits: 1,
+          }) / finalData.length
+        ).toFixed(2) + "%";
       totalValues.ctr.total =
-        totalValues.ctr.total.toLocaleString(undefined, {
-          maximumFractionDigits: 1,
-        }) /
-          finalData.length +
-        "%";
+        (
+          totalValues.ctr.total.toLocaleString(undefined, {
+            maximumFractionDigits: 1,
+          }) / finalData.length
+        ).toFixed(2) + "%";
 
       finalData.forEach((item) => {
         const dateObj = new Date(item.date);

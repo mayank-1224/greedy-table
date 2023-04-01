@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 var tempApps;
 export const fetchApps = createAsyncThunk("api/fetchApps", async () => {
-  const response = await fetch("http://go-dev.greedygame.com/v3/dummy/apps");
+  const response = await fetch("https://go-dev.greedygame.com/v3/dummy/apps");
 
   if (!response.ok) {
     throw new Error("Failed to fetch apps");
@@ -18,7 +18,7 @@ export const fetchReport = createAsyncThunk(
   "api/fetchReport",
   async (payload) => {
     const response = await fetch(
-      `http://go-dev.greedygame.com/v3/dummy/report?startDate=${payload.sDate}&endDate=${payload.eDate}`
+      `https://go-dev.greedygame.com/v3/dummy/report?startDate=${payload.sDate}&endDate=${payload.eDate}`
     );
     const resdata = await response.json();
     const data = resdata.data;

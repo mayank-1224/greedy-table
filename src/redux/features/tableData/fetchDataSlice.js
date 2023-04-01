@@ -17,7 +17,6 @@ export const fetchReport = createAsyncThunk(
     );
     const resdata = await response.json();
     const data = resdata.data;
-    const originalData = data;
     return {
       data: data,
       originalData: data,

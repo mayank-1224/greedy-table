@@ -40,10 +40,13 @@
 }
 
 ._apply {
-  width: 8rem;
+  width: 148px;
+  height: 40px;
   border: 1px solid #2178ed;
   background-color: #2178ed;
   color: #fff;
+  font-size: 16px;
+  font-family: "Lato", sans-serif;
 }
 
 .button_container {

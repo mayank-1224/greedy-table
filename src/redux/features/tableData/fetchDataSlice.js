@@ -295,7 +295,7 @@ export const fetchSlice = createSlice({
         item.requests = item.requests.toLocaleString();
         item.responses = item.responses.toLocaleString();
         item.impressions = item.impressions.toLocaleString();
-        item.revenue = "$" + item.revenue.toFixed(2);
+        if (item.revenue) item.revenue = "$" + item.revenue.toFixed(2);
       });
       state.report.finalData = finalData;
       state.report.totalValues = totalValues;

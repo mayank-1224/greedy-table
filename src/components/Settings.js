@@ -29,7 +29,15 @@ const Settings = () => {
     event.preventDefault();
     if (index !== draggedItemIndex) {
       const rect = event.target.getBoundingClientRect();
-      const hoverIndex = index + (event.clientX > rect.left + rect.width / 2);
+      const isLastRow = index >= items.length - 1;
+      let hoverIndex = index;
+
+      // remember: the items container is set to flex wrap. take into account both x and y coordinates
+      if (isLastRow && event.clientY > rect.bottom) {
+        hoverIndex = items.length;
+      } else if (!isLastRow && event.clientX > rect.left + rect.width / 2) {
+        hoverIndex = index + 1;
+      }
       dispatch(moveItem({ dragIndex: draggedItemIndex, hoverIndex }));
       setDraggedItemIndex(hoverIndex);
     }

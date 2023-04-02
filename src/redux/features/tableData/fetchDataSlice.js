@@ -218,7 +218,7 @@ export const fetchSlice = createSlice({
           data.impressions
         );
 
-        totalValues.revenue.total += data.revenue;
+        if (data.revenue > 0) totalValues.revenue.total += data.revenue;
         totalValues.revenue.min = Math.min(
           totalValues.revenue.min,
           data.revenue

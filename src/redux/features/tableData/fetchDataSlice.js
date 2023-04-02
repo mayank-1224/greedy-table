@@ -17,6 +17,11 @@ export const fetchReport = createAsyncThunk(
     );
     const resdata = await response.json();
     const data = resdata.data;
+    data.map((item) => {
+      item.ctr = ((item.clicks / item.impressions) * 100).toFixed(2);
+      item.fillRate = ((item.responses / item.requests) * 100).toFixed(2);
+    });
+    console.log(data);
     return {
       data: data,
       originalData: data,
@@ -89,14 +94,13 @@ export const fetchSlice = createSlice({
     filterByColumn(state, action) {
       const { column, value } = action.payload;
       if (column === "appName") {
-        const filteredData = state.report.finalData.filter((item) => {
-          if (item.appName === value) {
-            return item;
-          }
-        });
+        const filteredData = state.report.finalData.filter(
+          (item) => item[column] === value
+        );
         state.report.finalData = filteredData;
         return;
       }
+      console.log(column, value);
       const filteredData = state.report.data.filter((item) => {
         if (item[column] <= value) {
           return item;

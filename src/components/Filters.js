@@ -19,8 +19,10 @@ const Filters = (props) => {
   const [selectedApp, setSelectedApp] = useState("");
   const [typing, setTyping] = useState("");
   const apps = useSelector((state) => state.fetch.apps);
+  const items = useSelector((state) => state.metricsOrder.items);
   const dispatch = useDispatch();
   const appNames = apps.map((app) => app.app_name);
+  console.log(props.sValue, props.lValue);
 
   const handleApply = () => {
     dispatch(filterByColumn({ column: props.column, value }));
@@ -36,7 +38,12 @@ const Filters = (props) => {
   };
 
   return (
-    <div className="filters_container">
+    <div
+      className="filters_container"
+      style={{
+        right: props.column === items[8].id ? "5rem" : "",
+      }}
+    >
       {props.column === "appName" ? (
         <div>
           <input
@@ -106,6 +113,7 @@ const Filters = (props) => {
             max={props.lValue}
             value={value}
             onChange={(event) => setValue(event.target.value)}
+            // step={0.01}
           />
           {value}
           <div
